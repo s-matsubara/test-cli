@@ -49,3 +49,4 @@ brews:
       name: homebrew-tap
       branch: main
       token: "{{ .Env.GITHUB_PERSONAL_AUTH_TOKEN }}"
+  - folder: Formula
