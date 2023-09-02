@@ -35,3 +35,4 @@ jobs:
           # Your GoReleaser Pro key, if you are using the 'goreleaser-pro'
           # distribution:
           # GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
+          GITHUB_PERSONAL_AUTH_TOKEN: ${{ secrets.TAP_GITHUB_TOKEN }}
