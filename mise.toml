@@ -1,0 +1,12 @@
+[tasks.build]
+description = "Build a snapshot binary using Goreleaser (no release tag, clean output)"
+run = "goreleaser build --snapshot --clean"
+
+[tasks.update-go]
+description = "Update Go to the latest version and upgrade dependencies"
+run = [
+  "go mod edit -go=$(go version | awk '{print $3}' | cut -c3-)",  # Update go.mod version
+  "go get -u ./...",                          # Upgrade dependencies
+  "go mod tidy"                               # Cleanup go.mod and go.sum
+]
+

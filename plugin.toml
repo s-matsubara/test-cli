@@ -1,0 +1,18 @@
+[plugin]
+name = "test-cli"
+type = "github_release"
+repository = "s-matsubara/test-cli"
+
+[plugin.release]
+asset = "test-cli_{version}_{os}_{arch}.tar.gz"
+
+[plugin.release.arch_map]
+x86_64 = "amd64"
+aarch64 = "arm64"
+
+[plugin.release.os_map]
+darwin = "darwin"
+linux = "linux"
+
+[plugin.download]
+unpack = true
