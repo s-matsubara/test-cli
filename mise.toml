@@ -13,13 +13,21 @@ run = "go mod edit -go=$(go version | cut -d' ' -f3 | cut -c3-)"
 description = "Update Go module dependencies to the latest versions"
 run = "go get -u ./..."
 
-[tasks.go-test-all]
-description = "Run all Go tests in verbose mode with coverage reporting"
-run = "go test ./... -v -cover"
-
 [tasks.go-mod-tidy]
 description = "Clean up unused dependencies and add missing ones"
 run = "go mod tidy"
+
+[tasks.go-fmt]
+description = "Format all Go files"
+run = "go fmt ./..."
+
+[tasks.go-lint]
+description = "Run static analysis using golangci-lint"
+run = "golangci-lint run ./..."
+
+[tasks.go-test-all]
+description = "Run all Go tests in verbose mode with coverage reporting"
+run = "go test ./... -v -cover"
 
 [tasks.update-go-deps]
 description = "Update dependencies, sync Go version, and tidy the module"
