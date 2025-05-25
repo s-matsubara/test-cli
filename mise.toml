@@ -1,12 +1,26 @@
+[tools]
+go = "latest"
+
 [tasks.build]
 description = "Build a snapshot binary using Goreleaser (no release tag, clean output)"
 run = "goreleaser build --snapshot --clean"
 
-[tasks.update-go]
-description = "Update Go to the latest version and upgrade dependencies"
-run = [
-  "go mod edit -go=$(go version | awk '{print $3}' | cut -c3-)",  # Update go.mod version
-  "go get -u ./...",                          # Upgrade dependencies
-  "go mod tidy"                               # Cleanup go.mod and go.sum
-]
+[tasks.go-mod-edit]
+description = "Set go.mod's Go version to match the current Go version"
+run = "go mod edit -go=$(go version | cut -d' ' -f3 | cut -c3-)"
 
+[tasks.go-get]
+description = "Update Go module dependencies to the latest versions"
+run = "go get -u ./..."
+
+[tasks.go-mod-tidy]
+description = "Clean up unused dependencies and add missing ones"
+run = "go mod tidy"
+
+[tasks.update-go-deps]
+description = "Update dependencies, sync Go version, and tidy the module"
+run = [
+  "mise run go-mod-edit",
+  "mise run go-get",
+  "mise run go-mod-tidy"
+]
