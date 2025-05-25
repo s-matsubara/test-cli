@@ -19,7 +19,7 @@ var rootCmd = &cobra.Command{
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Fprintf(cmd.OutOrStdout(), "this is test-cli\n")
+		_, _ = fmt.Fprintf(cmd.OutOrStdout(), "this is test-cli\n")
 	},
 }
 
