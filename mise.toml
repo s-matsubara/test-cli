@@ -2,7 +2,11 @@
 go = "latest"
 
 [tasks.build]
-description = "Build a snapshot binary using Goreleaser (no release tag, clean output)"
+description = "Build for current OS/ARCH (go build equivalent)"
+run = "goreleaser build --snapshot --clean --single-target"
+
+[tasks.build-all]
+description = "Build for all target platforms using Goreleaser"
 run = "goreleaser build --snapshot --clean"
 
 [tasks.go-mod-edit]
