@@ -19,7 +19,7 @@ func TestMainIntegration(t *testing.T) {
 	cmd := exec.Command("go", "build", "-o", "test-cli-test")
 	err := cmd.Run()
 	assert.NoError(t, err, "Failed to build test binary")
-	defer os.Remove("test-cli-test")
+	defer func() { _ = os.Remove("test-cli-test") }()
 
 	output, err := exec.Command("./test-cli-test").CombinedOutput()
 	assert.NoError(t, err, "Failed to run test binary")
