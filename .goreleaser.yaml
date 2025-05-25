@@ -18,6 +18,15 @@ builds:
     goarch:
       - amd64
       - arm64
+    flags:
+      - -trimpath
+      - -buildvcs=false
+    ldflags:
+      - -s
+      - -w
+      - "-X test-cli/cmd/version.Version={{ .Version }}"
+      - "-X test-cli/cmd/version.Commit={{ .ShortCommit }}"
+      - "-X test-cli/cmd/version.BuildDate={{ .Date }}"
 
 # archives: default
 
