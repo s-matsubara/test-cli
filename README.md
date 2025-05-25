@@ -19,6 +19,12 @@ brew tap s-matsubara/homebrew-tap
 brew install test-cli
 ```
 
+### Via mise
+Add the following to your `.mise.toml` file:
+```toml
+"ubi:s-matsubara/test-cli" = "latest"
+```
+
 ### From Releases
 Download the latest binary from [GitHub Releases](https://github.com/s-matsubara/test-cli/releases).
 
