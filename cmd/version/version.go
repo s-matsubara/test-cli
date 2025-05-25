@@ -10,8 +10,10 @@ import (
 )
 
 var (
-	Version   = "dev"
-	Commit    = "none"
+	Version = "dev"
+	// Commit is the git commit hash, set during build
+	Commit = "none"
+	// BuildDate is the build timestamp, set during build
 	BuildDate = "unknown"
 )
 
