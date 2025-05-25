@@ -12,7 +12,7 @@ import (
 
 func TestRootCommand(t *testing.T) {
 	buf := new(bytes.Buffer)
-	rootCmd.SetOutput(buf)
+	rootCmd.SetOut(buf)
 
 	err := rootCmd.Execute()
 	assert.NoError(t, err, "Expected no error when executing root command")

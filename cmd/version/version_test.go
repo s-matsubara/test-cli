@@ -28,7 +28,7 @@ func TestVersionCommand(t *testing.T) {
 	buf := new(bytes.Buffer)
 	
 	cmd := NewVersionCmd()
-	cmd.SetOutput(buf)
+	cmd.SetOut(buf)
 	
 	err := cmd.Execute()
 	assert.NoError(t, err, "Expected no error when executing version command")
