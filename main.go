@@ -3,7 +3,7 @@ Copyright © 2023 matsubara
 */
 package main
 
-import "test-cli/cmd"
+import "github.com/s-matsubara/test-cli/cmd"
 
 func main() {
 	cmd.Execute()

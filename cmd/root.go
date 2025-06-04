@@ -3,11 +3,11 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/s-matsubara/test-cli/cmd/greet"
+	"github.com/s-matsubara/test-cli/cmd/version"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
-	"test-cli/cmd/greet"
-	"test-cli/cmd/version"
 )
 
 var cfgFile string

@@ -1,4 +1,4 @@
-module test-cli
+module github.com/s-matsubara/test-cli
 
 go 1.24.3
 
