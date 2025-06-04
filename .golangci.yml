@@ -37,7 +37,7 @@ run:
 
 output:
   formats:
-    - colored-line-number
+    colored-line-number: true
 
 issues:
   max-same-issues: 3
