@@ -1,27 +1,50 @@
-/*
-Copyright © 2023 matsubara
-*/
+// Package cmd /*
 package cmd
 
 import (
 	"fmt"
-	"os"
-
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"os"
+	"test-cli/cmd/greet"
 	"test-cli/cmd/version"
 )
 
-// rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
-	Use:   "test-cli",
-	Short: "test-cli",
-	Long:  "test-cli",
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	Run: func(cmd *cobra.Command, args []string) {
-		_, _ = fmt.Fprintf(cmd.OutOrStdout(), "this is test-cli\n")
-	},
+var cfgFile string
+
+// NewRootCmd creates and returns the root command
+func NewRootCmd() *cobra.Command {
+	rootCmd := &cobra.Command{
+		Use:   "test-cli",
+		Short: "A sample CLI tool demonstrating modern Go CLI development practices",
+		Long:  `test-cli is an example CLI application showcasing production-grade build automation, multi-platform distribution, and comprehensive testing.`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if _, err := fmt.Fprintf(cmd.OutOrStdout(), "this is test-cli\n"); err != nil {
+				return err
+			}
+
+			return nil
+		},
+	}
+
+	// Add persistent flags that will be global for your application
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.test-cli.yaml)")
+
+	// Add local flags
+	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
+	// Add subcommands
+	rootCmd.AddCommand(version.NewVersionCmd())
+	rootCmd.AddCommand(greet.NewGreetCmd())
+
+	// Initialize Viper for configuration
+	cobra.OnInitialize(initConfig)
+
+	return rootCmd
 }
+
+// rootCmd represents the base command when called without any subcommands
+var rootCmd = NewRootCmd()
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
@@ -32,16 +55,37 @@ func Execute() {
 	}
 }
 
+// init is called automatically by Go when the package is initialized
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
+	// This function is kept for potential future initialization needs
+	// All command setup is now done in NewRootCmd()
+}
 
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.test-cli.yaml)")
+// initConfig reads in config file and ENV variables if set
+func initConfig() {
+	if cfgFile != "" {
+		// Use config file from the flag
+		viper.SetConfigFile(cfgFile)
+	} else {
+		// Find home directory
+		home, err := os.UserHomeDir()
+		if err != nil {
+			_, _ = fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+			os.Exit(1)
+		}
 
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+		// Search config in home directory with name ".test-cli" (without extension)
+		viper.AddConfigPath(home)
+		viper.AddConfigPath(".")
+		viper.SetConfigType("yaml")
+		viper.SetConfigName(".test-cli")
+	}
 
-	rootCmd.AddCommand(version.NewVersionCmd())
+	// Read in environment variables that match
+	viper.AutomaticEnv()
+
+	// If a config file is found, read it in
+	if err := viper.ReadInConfig(); err == nil {
+		_, _ = fmt.Fprintf(os.Stderr, "Using config file: %s\n", viper.ConfigFileUsed())
+	}
 }
