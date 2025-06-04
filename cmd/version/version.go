@@ -9,9 +9,9 @@ import (
 var (
 	// Version is the semantic version of the CLI, set during build.
 	Version = "dev"
-	// Commit is the git commit hash, set during build
+	// Commit is the git commit hash, set during build.
 	Commit = "none"
-	// BuildDate is the build timestamp, set during build
+	// BuildDate is the build timestamp, set during build.
 	BuildDate = "unknown"
 )
 

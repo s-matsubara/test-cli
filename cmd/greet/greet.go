@@ -8,13 +8,13 @@ import (
 )
 
 var (
-	// Name is the name to greet
+	// Name is the name to greet.
 	Name string
-	// Format is the greeting format
+	// Format is the greeting format.
 	Format string
 )
 
-// NewGreetCmd creates and returns the greet command
+// NewGreetCmd creates and returns the greet command.
 func NewGreetCmd() *cobra.Command {
 	greetCmd := &cobra.Command{
 		Use:   "greet",

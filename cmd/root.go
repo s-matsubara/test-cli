@@ -12,7 +12,7 @@ import (
 
 var cfgFile string
 
-// NewRootCmd creates and returns the root command
+// NewRootCmd creates and returns the root command.
 func NewRootCmd() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:   "test-cli",
@@ -43,7 +43,7 @@ func NewRootCmd() *cobra.Command {
 	return rootCmd
 }
 
-// rootCmd represents the base command when called without any subcommands
+// rootCmd represents the base command when called without any subcommands.
 var rootCmd = NewRootCmd()
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -55,13 +55,13 @@ func Execute() {
 	}
 }
 
-// init is called automatically by Go when the package is initialized
+// init is called automatically by Go when the package is initialized.
 func init() {
 	// This function is kept for potential future initialization needs
 	// All command setup is now done in NewRootCmd()
 }
 
-// initConfig reads in config file and ENV variables if set
+// initConfig reads in config file and ENV variables if set.
 func initConfig() {
 	if cfgFile != "" {
 		// Use config file from the flag
