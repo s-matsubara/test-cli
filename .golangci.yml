@@ -1,0 +1,43 @@
+version: "2"
+
+linters:
+  enable:
+    - errcheck
+    - ineffassign
+    - gocyclo
+    - misspell
+    - revive
+
+  disable:
+    - staticcheck
+    - unused
+    - govet
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+
+  gocyclo:
+    min-complexity: 15
+
+  goimports:
+    local-prefixes: test-cli
+
+  misspell:
+    locale: US
+
+  unused:
+    check-exported: false
+
+run:
+  timeout: 5m
+  tests: true
+  concurrency: 4
+  build-tags: []
+
+output:
+  formats:
+    - colored-line-number
+
+issues:
+  max-same-issues: 3

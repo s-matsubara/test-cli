@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGreetCommand(t *testing.T) {
@@ -71,10 +72,12 @@ func TestGreetCommand(t *testing.T) {
 
 			// Set flags and args
 			if tt.nameFlag != "" {
-				cmd.Flags().Set("name", tt.nameFlag)
+				err := cmd.Flags().Set("name", tt.nameFlag)
+				require.NoError(t, err)
 			}
 			if tt.format != "Hello, %s!" {
-				cmd.Flags().Set("format", tt.format)
+				err := cmd.Flags().Set("format", tt.format)
+				require.NoError(t, err)
 			}
 			cmd.SetArgs(tt.args)
 

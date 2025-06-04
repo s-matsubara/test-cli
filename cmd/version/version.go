@@ -7,6 +7,7 @@ import (
 )
 
 var (
+	// Version is the semantic version of the CLI, set during build.
 	Version = "dev"
 	// Commit is the git commit hash, set during build
 	Commit = "none"
@@ -14,12 +15,13 @@ var (
 	BuildDate = "unknown"
 )
 
+// NewVersionCmd returns a new cobra.Command that prints CLI version information.
 func NewVersionCmd() *cobra.Command {
 	versionCmd := &cobra.Command{
 		Use:   "version",
 		Short: "Print the version information",
 		Long:  `Print the version, commit, and build date information for the CLI`,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			if _, err := fmt.Fprintf(cmd.OutOrStdout(), "Version: %s\n", Version); err != nil {
 				return err
 			}

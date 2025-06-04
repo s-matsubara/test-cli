@@ -18,7 +18,7 @@ func NewRootCmd() *cobra.Command {
 		Use:   "test-cli",
 		Short: "A sample CLI tool demonstrating modern Go CLI development practices",
 		Long:  `test-cli is an example CLI application showcasing production-grade build automation, multi-platform distribution, and comprehensive testing.`,
-		RunE: func(cmd *cobra.Command, args []string) error {
+		RunE: func(cmd *cobra.Command, _ []string) error {
 			if _, err := fmt.Fprintf(cmd.OutOrStdout(), "this is test-cli\n"); err != nil {
 				return err
 			}
