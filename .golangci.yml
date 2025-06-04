@@ -1,21 +1,61 @@
 version: "2"
 
+run:
+  timeout: 5m
+  tests: true
+  concurrency: 4
+  build-tags: []
+  go: "1.24.3"
+
+output:
+  formats:
+    colored-line-number: true
+
 linters:
   enable:
-    - errcheck
-    - ineffassign
-    - gocyclo
-    - misspell
-    - revive
+    # Core Go linters
+    - errcheck      # Check for unchecked errors
+    - govet         # Go vet tool
+    - ineffassign   # Detect ineffectual assignments
+    - staticcheck   # Advanced static analysis
+    - unused        # Check for unused constants, variables, functions and types
+    
+    # Code quality
+    - gocyclo       # Cyclomatic complexity
+    - revive        # Fast, configurable, extensible, flexible, and beautiful linter for Go
+    - misspell      # Find commonly misspelled English words
+    - unconvert     # Remove unnecessary type conversions
+    - unparam       # Report unused function parameters
+    
+    # Security
+    - gosec         # Security problems
+    
+    # Performance
+    - prealloc      # Find slice declarations that could potentially be pre-allocated
+    
+    # Style and best practices
+    - goconst       # Find repeated strings that could be replaced by a constant
+    - gocritic      # Comprehensive Go source code linter
+    - godot         # Check if comments end in a period
+    - nolintlint    # Reports ill-formed or insufficient nolint directives
+    
+    # Additional useful linters
+    - copyloopvar   # Check for loop variable copying issues
 
   disable:
-    - staticcheck
-    - unused
-    - govet
+    - exhaustive    # Too strict for CLI applications
+    - funlen        # Function length can be reasonable for CLI commands
+    - lll           # Line length can be flexible for CLI help text
+    - wsl           # Whitespace linter can be too opinionated
 
 linters-settings:
   errcheck:
     check-type-assertions: true
+    check-blank: true
+    exclude-functions:
+      - fmt.Print
+      - fmt.Println
+      - fmt.Printf
 
   gocyclo:
     min-complexity: 15
@@ -25,19 +65,69 @@ linters-settings:
 
   misspell:
     locale: US
+    ignore-words:
+      - matsubara
 
   unused:
     check-exported: false
 
-run:
-  timeout: 5m
-  tests: true
-  concurrency: 4
-  build-tags: []
+  gosec:
+    excludes:
+      - G204  # Subprocess launched with variable - common in CLI tools
+      - G304  # File path provided as taint input - common in CLI tools
 
-output:
-  formats:
-    colored-line-number: true
+  govet:
+    enable-all: true
+    disable:
+      - fieldalignment  # Can be too strict for simple structs
+
+  staticcheck:
+    checks: ["all"]
+
+  revive:
+    rules:
+      - name: exported
+        disabled: true  # Allow unexported functions in main packages
+      - name: package-comments
+        disabled: true  # CLI packages don't always need package comments
+
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+    disabled-checks:
+      - unnamedResult  # Named returns can be useful for documentation
+      - hugeParam      # CLI structs can be reasonably large
+
+  godot:
+    scope: declarations
+    exclude:
+      - "^\\s*//\\s*nolint"  # Exclude nolint comments
+
+  nolintlint:
+    allow-unused: false
+    require-explanation: true
+    require-specific: true
 
 issues:
   max-same-issues: 3
+  exclude-use-default: false
+  exclude-rules:
+    # Exclude some linters from running on tests files
+    - path: _test\.go
+      linters:
+        - gosec
+        - gocritic
+    
+    # Exclude godot from checking test function names
+    - path: _test\.go
+      text: "comment on exported function"
+      linters:
+        - revive
+    
+    # Allow globals in main package for CLI applications
+    - path: main\.go
+      text: "don't use global variables"
+      linters:
+        - gocritic
