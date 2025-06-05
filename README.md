@@ -20,9 +20,36 @@ brew install test-cli
 ```
 
 ### Via mise
+
+There are two ways to install via [mise](https://mise.jdx.dev/):
+
+#### 1. Using the ubi plugin
+
+This method downloads prebuilt binaries from GitHub Releases.
+
 Add the following to your `.mise.toml` file:
+
 ```toml
 "ubi:s-matsubara/test-cli" = "latest"
+```
+
+Then run:
+
+```bash
+mise install test-cli
+```
+
+#### 2. Using plugin.toml (Custom plugin)
+
+This repository includes a `plugin.toml` file to support installation as a custom plugin.
+
+This file defines how to install versioned binaries from GitHub Releases using `mise`. It maps OS/architecture identifiers and sets up proper asset naming for automated installation.
+
+To use this method, run:
+
+```bash
+mise plugin add test-cli https://github.com/s-matsubara/test-cli.git
+mise install test-cli@latest
 ```
 
 ### From Releases
