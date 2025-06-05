@@ -1,4 +1,4 @@
-// Package cmd /*
+// Package cmd implements the root command for the CLI.
 package cmd
 
 import (
