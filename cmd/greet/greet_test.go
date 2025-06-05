@@ -14,15 +14,6 @@ import (
 )
 
 func TestGreetCommand(t *testing.T) {
-	// Save original values
-	oldName := Name
-	oldFormat := Format
-
-	// Restore original values after test
-	defer func() {
-		Name = oldName
-		Format = oldFormat
-	}()
 
 	tests := []struct {
 		name     string
