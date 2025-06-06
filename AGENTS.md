@@ -4,6 +4,7 @@
 - Use Conventional Commits style: `<type>: <description>`
   - Example: `feat: add custom flag for greet`
   - Types: feat, fix, docs, test, chore, etc.
+- Keep the summary imperative, under 50 characters and start in lowercase
 
 ## Coding Style
 - Format Go code with `go fmt` before committing.
