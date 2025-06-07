@@ -9,125 +9,125 @@ run:
 
 output:
   formats:
-    colored-line-number: true
+    text:
+      path: stdout
+      color: true
 
 linters:
   enable:
     # Core Go linters
-    - errcheck      # Check for unchecked errors
-    - govet         # Go vet tool
-    - ineffassign   # Detect ineffectual assignments
-    - staticcheck   # Advanced static analysis
-    - unused        # Check for unused constants, variables, functions and types
-    
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+
     # Code quality
-    - gocyclo       # Cyclomatic complexity
-    - revive        # Fast, configurable, extensible, flexible, and beautiful linter for Go
-    - misspell      # Find commonly misspelled English words
-    - unconvert     # Remove unnecessary type conversions
-    - unparam       # Report unused function parameters
-    
+    - gocyclo
+    - revive
+    - misspell
+    - unconvert
+    - unparam
+
     # Security
-    - gosec         # Security problems
-    
+    - gosec
+
     # Performance
-    - prealloc      # Find slice declarations that could potentially be pre-allocated
-    
+    - prealloc
+
     # Style and best practices
-    - goconst       # Find repeated strings that could be replaced by a constant
-    - gocritic      # Comprehensive Go source code linter
-    - godot         # Check if comments end in a period
-    - nolintlint    # Reports ill-formed or insufficient nolint directives
-    
+    - goconst
+    - gocritic
+    - godot
+    - nolintlint
+
     # Additional useful linters
-    - copyloopvar   # Check for loop variable copying issues
+    - copyloopvar
 
   disable:
-    - exhaustive    # Too strict for CLI applications
-    - funlen        # Function length can be reasonable for CLI commands
-    - lll           # Line length can be flexible for CLI help text
-    - wsl           # Whitespace linter can be too opinionated
+    - exhaustive
+    - funlen
+    - lll
+    - wsl
 
-linters-settings:
-  errcheck:
-    check-type-assertions: true
-    check-blank: true
-    exclude-functions:
-      - fmt.Print
-      - fmt.Println
-      - fmt.Printf
+  settings:
+    errcheck:
+      check-type-assertions: true
+      check-blank: true
+      exclude-functions:
+        - fmt.Print
+        - fmt.Println
+        - fmt.Printf
 
-  gocyclo:
-    min-complexity: 15
+    gocyclo:
+      min-complexity: 15
 
-  goimports:
-    local-prefixes: test-cli
+    goimports:
+      local-prefixes: test-cli
 
-  misspell:
-    locale: US
-    ignore-words:
-      - matsubara
+    misspell:
+      locale: US
+      ignore-rules:
+        - matsubara
 
-  unused:
-    check-exported: false
+    unused:
+      check-exported: false
 
-  gosec:
-    excludes:
-      - G204  # Subprocess launched with variable - common in CLI tools
-      - G304  # File path provided as taint input - common in CLI tools
+    gosec:
+      excludes:
+        - G204
+        - G304
 
-  govet:
-    enable-all: true
-    disable:
-      - fieldalignment  # Can be too strict for simple structs
+    govet:
+      enable-all: true
+      disable:
+        - fieldalignment
 
-  staticcheck:
-    checks: ["all"]
+    staticcheck:
+      checks: ["all"]
 
-  revive:
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+        - name: package-comments
+          disabled: true
+
+    gocritic:
+      enabled-tags:
+        - diagnostic
+        - style
+        - performance
+      disabled-checks:
+        - unnamedResult
+        - hugeParam
+
+    godot:
+      scope: declarations
+      exclude:
+        - "^\\s*//\\s*nolint"
+
+    nolintlint:
+      allow-unused: false
+      require-explanation: true
+      require-specific: true
+
+  exclusions:
     rules:
-      - name: exported
-        disabled: true  # Allow unexported functions in main packages
-      - name: package-comments
-        disabled: true  # CLI packages don't always need package comments
+      - path: _test\.go
+        linters:
+          - gosec
+          - gocritic
 
-  gocritic:
-    enabled-tags:
-      - diagnostic
-      - style
-      - performance
-    disabled-checks:
-      - unnamedResult  # Named returns can be useful for documentation
-      - hugeParam      # CLI structs can be reasonably large
+      - path: _test\.go
+        text: "comment on exported function"
+        linters:
+          - revive
 
-  godot:
-    scope: declarations
-    exclude:
-      - "^\\s*//\\s*nolint"  # Exclude nolint comments
-
-  nolintlint:
-    allow-unused: false
-    require-explanation: true
-    require-specific: true
+      - path: main\.go
+        text: "don't use global variables"
+        linters:
+          - gocritic
 
 issues:
   max-same-issues: 3
-  exclude-use-default: false
-  exclude-rules:
-    # Exclude some linters from running on tests files
-    - path: _test\.go
-      linters:
-        - gosec
-        - gocritic
-    
-    # Exclude godot from checking test function names
-    - path: _test\.go
-      text: "comment on exported function"
-      linters:
-        - revive
-    
-    # Allow globals in main package for CLI applications
-    - path: main\.go
-      text: "don't use global variables"
-      linters:
-        - gocritic
