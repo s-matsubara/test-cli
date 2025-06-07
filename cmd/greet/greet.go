@@ -45,9 +45,9 @@ func NewGreetCmd() *cobra.Command {
 	greetCmd.Flags().StringVarP(&name, "name", "n", "", "Name to greet (default is \"World\")")
 	greetCmd.Flags().StringVarP(&format, "format", "f", "Hello, %s!", "Greeting format (use %s for the name)")
 
-	// Bind flags to viper
-	_ = viper.BindPFlag("greet.name", greetCmd.Flags().Lookup("name"))
-	_ = viper.BindPFlag("greet.format", greetCmd.Flags().Lookup("format"))
+	// Bind flags to viper and handle possible errors
+	cobra.CheckErr(viper.BindPFlag("greet.name", greetCmd.Flags().Lookup("name")))
+	cobra.CheckErr(viper.BindPFlag("greet.format", greetCmd.Flags().Lookup("format")))
 
 	return greetCmd
 }
