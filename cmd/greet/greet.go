@@ -7,6 +7,14 @@ import (
 	"github.com/spf13/viper"
 )
 
+const (
+	flagName   = "name"
+	flagFormat = "format"
+
+	defaultName   = "World"
+	defaultFormat = "Hello, %s!"
+)
+
 // NewGreetCmd creates and returns the greet command.
 func NewGreetCmd() *cobra.Command {
 	var (
@@ -26,7 +34,7 @@ func NewGreetCmd() *cobra.Command {
 
 			// If name is still not provided, use default
 			if name == "" {
-				name = "World"
+				name = defaultName
 			}
 
 			// Format the greeting
@@ -42,12 +50,12 @@ func NewGreetCmd() *cobra.Command {
 	}
 
 	// Add local flags
-	greetCmd.Flags().StringVarP(&name, "name", "n", "", "Name to greet (default is \"World\")")
-	greetCmd.Flags().StringVarP(&format, "format", "f", "Hello, %s!", "Greeting format (use %s for the name)")
+	greetCmd.Flags().StringVarP(&name, flagName, "n", "", fmt.Sprintf("Name to greet (default is %q)", defaultName))
+	greetCmd.Flags().StringVarP(&format, flagFormat, "f", defaultFormat, "Greeting format (use %s for the name)")
 
 	// Bind flags to viper and handle possible errors
-	cobra.CheckErr(viper.BindPFlag("greet.name", greetCmd.Flags().Lookup("name")))
-	cobra.CheckErr(viper.BindPFlag("greet.format", greetCmd.Flags().Lookup("format")))
+	cobra.CheckErr(viper.BindPFlag("greet."+flagName, greetCmd.Flags().Lookup(flagName)))
+	cobra.CheckErr(viper.BindPFlag("greet."+flagFormat, greetCmd.Flags().Lookup(flagFormat)))
 
 	return greetCmd
 }
